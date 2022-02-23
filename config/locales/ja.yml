@@ -1,0 +1,24 @@
+# ja.yml
+# orderカラムのpayment
+ja:
+  enums:
+    order:
+      payment:
+        credit_card: 'クレジットカード'
+        transfer: '銀行振込'
+# orderカラムのstatus
+      status:
+        wating: '入金待ち'
+        paid_up: '入金確認'
+        making: '製作中'
+        preparing: '発送準備'
+        shipped: '発送済み'
+# order_detailカラムのmaking_status
+    order_detail:
+      making_status:
+        #making_status: { no_making: 0, wating: 1, making: 2, finished: 3 }
+        no_making: '製作不可'
+        wating: '製作待ち'
+        making: '製作中'
+        finished: '製作完了'
+
