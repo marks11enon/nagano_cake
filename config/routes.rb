@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     get "/customers/my_page" => "customers#show", as: "customers_my_page"
     get "/customers/unsubscribe" => "customers#unsubscribe", as: "unsubscribe"
     patch "/customers/withdraw" => "customers#withdraw", as: "withdraw"
-    resources :customers, only: [:show, :edit, :update]
+    resources :customers
     delete "/cart_items/destroy_all" => "cart_items#destroy_all", as: "destroy_all"
     resources :cart_items, only: [:index, :update, :destroy, :create]
     get "/orders/comfirm" => "orders#comfirm", as: "comfirm"
