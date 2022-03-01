@@ -1,2 +1,36 @@
-<h1>Admin::Items#edit</h1>
-<p>Find me in app/views/admin/items/edit.html.erb</p>
+<div>
+  <p>商品編集</p>
+    <%= form_with model: @item, url: admin_item_path(@item), method: :patch, local: true do |f| %>
+      <div class="form-group">
+        <%= f.label :image, "商品画像" %>
+        <%= f.file_field :image, accept: "image/*", class:"item_image" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :name, "商品名" %>
+        <%= f.text_field :name, class:"item_name" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :introduction, "商品説明" %>
+        <%= f.text_area :introduction, class:"item_introduction" %>
+      </div>
+      <!-- ここにジャンル選択のプルダウンを挿入-->
+      <div class="form-group">
+        <%= f.label :genre_id, "ジャンル" %>
+        <%= f.collection_select :genre_id, Genre.all, :id, :name, include_blank: "選択してください" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :price, "税抜価格" %>
+        <%= f.text_field :price, class:"item_price" %>円
+      </div>
+      <div class="form-group">
+        <%= f.label :is_active, "販売ステータス" %>
+        <%= f.radio_button :is_active, :true %>
+        <%= f.label :is_active_true, "販売中", value: :ture %>
+        <%= f.radio_button :is_active, :false %>
+        <%= f.label :is_active_false, "販売停止中", value: :false %>
+      </div>
+      <div class="action">
+        <%= f.submit '変更を保存', class:"btn btn-success" %>
+      </div>
+    <% end %>
+</div>
