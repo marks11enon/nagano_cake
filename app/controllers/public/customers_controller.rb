@@ -1,22 +1,31 @@
 class Public::CustomersController < ApplicationController
+
+  # show edit update は　current_customerで対応可能
+  # unsubscribe withdrawは Customer.find_by(email: session[:email])で対応可能
+  # current_customer　にて統一
   def show
-    @customer = current_customer
+    @customer = Customer.find(current_customer.id)
   end
 
   def edit
-    @customer = current_customer
+    @customer = Customer.find(current_customer.id)
   end
 
   def update
-    @customer = current_customer
+    @customer = Customer.find(current_customer.id)
     @customer.update(customer_params)
     redirect_to customers_my_page_path
   end
 
   def unsubscribe
+    @customer = Customer.find(current_customer.id)
   end
 
   def withdraw
+    @customer = Customer.find(current_customer.id)
+    @customer.update(is_deleted: true)
+    reset_session
+    redirect_to root_path
   end
 
   private
