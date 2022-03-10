@@ -1,13 +1,16 @@
 class Public::CartItemsController < ApplicationController
-  before_action :authenticate_cutomer!
-  before_action :customer_is_deleted
+  before_action :authenticate_customer!
 
   def index
     @cart_items = current_customer.cart_items
-    @total_price = @cart_items.sum(:price)
   end
 
   def create
+    binding.pry
+    @item =Item.find(cart_item_params[:item_id])
+    @cart_item.price = @cart_item.item.price * @cart_item.amount
+    @cart_item.save
+    redirect_to cart_items_path
   end
 
   def update
@@ -20,7 +23,7 @@ class Public::CartItemsController < ApplicationController
   end
 
   private
-  def items_params
-    pramas.require(:cart_items).permit(:customer_id, :item_id, :amount, :price)
+  def cart_item_params
+    pramas.require(:cart_item).permit(:item_id, :customer_id, :amount)
   end
 end
