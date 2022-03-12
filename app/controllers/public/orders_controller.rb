@@ -1,11 +1,10 @@
 class Public::OrdersController < ApplicationController
+  before_action :authenticate_customer!
+
   def new
-    @order = Order.new
-		@customer = current_customer
-		@addresses = Address.where(customer_id: current_customer.id)
   end
 
-  def comfirm
+  def confirm
   end
 
   def complete
@@ -19,7 +18,5 @@ class Public::OrdersController < ApplicationController
 
   def show
   end
-
-  # private
 
 end

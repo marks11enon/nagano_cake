@@ -5,7 +5,7 @@ class Address < ApplicationRecord
   validates :address, :name, presence: true
 
 	# 配送先住所情報の結合
-	def address_all
-	  self.postal_code + " " + self.address + " " + self.name
+	def address_display
+	    self.postal_code + " " + self.address + " " + self.name
 	end
 end

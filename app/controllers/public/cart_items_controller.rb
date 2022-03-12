@@ -9,7 +9,7 @@ class Public::CartItemsController < ApplicationController
 
   def create
     # @cart_item = current_customer.cart_items.build(item_id: params[:item_id])
-    # byebug
+    # binding.pry
     @item =Item.find(cart_item_params[:item_id])
     @cart_item = CartItem.new(cart_item_params)
     @cart_item.customer_id = current_customer.id
