@@ -1,70 +1,62 @@
-<div class="cart_container" style="width:90%; margin: 20px auto; position:relative;">
-  <strong style="font-size:18px;">
-  <img src="/assets/cart_icon.jpg" style="display:inline-block; height: 25px;">
-	ショッピングカート</strong>
-
-	<div class="row" style="width:100%; height:20px;"></div>
-		<div style="position:absolute; top: 30px; right: 0;">
-			<%= link_to cart_items_path, method: :delete do %>
-				<span class="btn btn-danger">カートを空にする</span>
-			<% end %>
+<div class="row">
+	<div class="col-xs-12">
+		<div>
+			<h3>ショッピングカート</h3>
+			<%= link_to "カートを空にする", destroy_all_path, method: :delete, class: "pull-right btn btn-danger" %>
 		</div>
-
-		<%= form_with url: cart_items_path, method: :patch do |f| %>
-			<span style="color:#266846;">表示されている価格は全て税込です。</span>
-				<table class="table table-bordered">
-					<tr style="background:#dad7d7; border: 1px solid #fff;">
-						<th>商品名</th>
-						<th>単価(税込)</th>
-						<th>数量</th>
-						<th>小計</th>
-						<th></th>
-					</tr>
-					<% @cart_items.each do |item| %>
-						<tr>
-							<td>
-								<%= image_tag item.image, :fill, 50, 50 %>
-								<%= item.name %>
+		<table class="table table-hover table-bordered col-xs-10" >
+      <thead>
+        <tr class="info">
+          <th class="col-xs-3">商品名</th>
+          <th class="col-xs-2">単価(税込)</th>
+          <th class="col-xs-1">数量</th>
+          <th class="col-xs-1">小計</th>
+          <th class="col-xs-1"></th>
+        </tr>
+      </thead>
+      <tbody>
+				<% @cart_items.each do |cart_item| %>
+				<tr>
+					<!-- 画像挿入は要確認 -->
+					<td class="col-xs-3"><%= cart_item.item.name %></td>
+					<td class="col-xs-2">
+						<%= hidden_field_tag :item_price, cart_item.item.price %>
+						<%= cart_item.item.with_tax_price %>
+					</td>
+						<%= form_with model: @cart_item, url: cart_item_path(cart_item), method: :patch, local: true do |f| %>
+							<td class="col-xs-1">
+								<%= f.hidden_field :item_id, :value => cart_item.item.id %>
+      					<%= f.select :amount, *[1..10] %>
+								<%= f.submit "変更", class: "btn btn-primary" %>
 							</td>
-							<td>
-								<%= hidden_field_tag :item_price, item.price %>
-								<%= addTax(item.product.price) %>
-							</td>
-							<td>
-								<%= hidden_field_tag "item_id[#{item.id}]", item.item_id %>
-								<%= number_field_tag "amount[#{item.id}]", item.amount, in: 1..10 %>
-							</td>
-							<td>
-								<%= hidden_field_tag "price[#{item.id}]", item.price %>
-								<%= item.add_tax_price.to_s(:delimited) %>
-							</td>
-							<td><%= link_to '削除する', cart_item_path(item), method: :delete %></td>
-						</tr>
-					 <% end %>
-				</table>
-				<div class="row">
-					<div class="col-xs-4">
-						<%= link_to root_path do %>
-							<span class="btn btn-info glyphicon glyphicon-chevron-left">買い物を続ける</span>
 						<% end %>
-					</div>
-					<div class="col-xs-4 pull-right">
-						<table class="table table-striped">
-							<tr style="background:#dad7d7; border: 1px solid #fff;"><th>合計金額</th></tr>
-						</table>
-						<div class="pull-right">
-							<%= f.submit '再計算する', class:"btn btn-default", data: {toggle:"tooltip", placement:"left"}, title:"数量を変更したらクリック" %>
+					<td class="col-xs-1">
+						<%= cart_item.subtotal %>
+					</td>
+					<td class="col-xs-1">
+						<div>
+							<%= link_to "削除する", cart_item_path(cart_item), method: :delete, class: "btn btn-danger" %>
 						</div>
-					</div>
-				</div>
-		<% end %>
-
-	<!-- カートに商品が入っていたら表示させる -->
-
-	<% if @cart_items.blank? %>
-		<% else %>
-		<div class="text-center">
-			<%= link_to '購入に進む', new_order_path, class:"btn btn-success" %>
-		</div>
-	<% end %>
+					</td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
 </div>
+
+<div class="col-xs-8">
+	<span><%= link_to "買い物を続ける", items_path, class: "btn btn-primary" %></span>
+</div>
+<div class="col-xs-4">
+	<table class="table table-bordered">
+		<tr>
+			<td class="info col-xs-2">合計金額</td>
+      <td class="col-xs-2"><%= @total %></td>
+		</tr>
+	</table>
+</div>
+<div class="col-xs-4 col-xs-offset-4">
+	<span><%= link_to "情報入力に進む", orders_path, class: "col-xs-12 btn btn-success" %></span>
+</div>
+

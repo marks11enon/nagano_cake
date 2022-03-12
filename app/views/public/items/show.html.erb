@@ -1,26 +1,26 @@
-<div class="row" style="width: 90%; margin: 20px auto;">
-	<div class="col-xs-3" style = "margin-top: 50px">
-	  <span><strong>ジャンルで検索</strong></span>
-    <% @genres.each do |genre| %>
-      <%= link_to items_path(genre: genre.id) do %>
-        <span style = "background-color: #2D714C" class="badge"><%= genre.name %></span>
-      <% end %>
-    <% end %>
-  </div>
 
-  <div class="col-xs-5" style="margin: 100px 0 100px 0">
-    <%= image_tag @item.image, size:"200x200" %>
+<div class="row">
+	<div class="col-xs-3">
+	  <%= render 'public/items/sidebar', genres: @genres %>
   </div>
-  <div class="col-xs-4" style ="margin: 100px 0 100px 0">
+  <br>
+
+  <div class="col-xs-5">
+    <!-- 商品画像の大きさは別途調整  -->
+    <%= image_tag @item.image, size:"350x250" %>
+  </div>
+  <div class="col-xs-5">
     <h3><%= @item.name %></h3>
     <p><%= @item.introduction %></p>
-    <h4><%= @item.add_tax_price.to_s(:delimited) %>
-    <span>円(税込価格)</span>
-    </h4>
-    <%= form_with model: @cart_item, local: true do |f| %>
+    <h4><%= @item.with_tax_price.to_s(:delimited) %><span>円(税込価格)</span></h4>
+
+    <%= form_with model: @cart_item, url: cart_items_path(item_id: @item), method: :post, local: true do |f| %>
       <%= f.hidden_field :item_id %>
-      <%= f.select :amount, [1,2,3,4,5,6,7,8,9,10] %>
+      <%= f.select :amount, *[1..10] %>
       <%= f.submit "カートに入れる", class: 'btn btn-primary col-xs-5' %>
     <% end %>
   </div>
 </div>
+
+
+

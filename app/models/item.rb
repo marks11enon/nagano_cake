@@ -6,9 +6,9 @@ class Item < ApplicationRecord
 
   scope :active, -> {where(is_active: true)}
 
-  # 消費税を加えた商品価格
-  def add_tax_price
-    (self.price * 1.1).round
+  # 消費税を求めるメソッド
+  def with_tax_price
+    (price * 1.1).floor
   end
 
 end

@@ -6,6 +6,7 @@ class Public::ItemsController < ApplicationController
       @items = Item.active
     end
     @genres = Genre.all
+    @items_all = Item.all
   end
 
   def show

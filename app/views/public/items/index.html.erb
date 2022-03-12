@@ -1,20 +1,22 @@
-<div class:"row" style="width: 90%; margin: 20px auto;">
-  <span><strong>ジャンルで検索</strong></span>
-    <% @genres.each do |genre| %>
-      <%= link_to items_path(genre: genre.id) do %>
-        <span style = "background-color: #2D714C" class="badge"><%= genre.name %></span>
+
+<div class:"row">
+  <div class="col-xs-3">
+	  <%= render 'public/items/sidebar', genres: @genres %>
+  </div>
+  <br>
+
+  <h2 style="margin: 20px 0;">商品一覧(全<%= @items_all.count %>件)</h2>
+	<div class="col-xs-9 col-xs-offset-1">
+		<div class="product-card-content">
+      <% @items.each do |item| %>
+        <div>
+          <%= link_to item_path(item) do %>
+            <%= image_tag item.image, size:"200x150" %>
+          <% end %>
+          <%= item.name %>
+          <%= item.price %>円<br>
+        </div>
       <% end %>
-    <% end %>
-  <div class:"row">
-    <h1>商品一覧</h1>
-    <% @items.each do |item| %>
-      <div>
-        <%= link_to item_path(item) do %>
-          <%= image_tag item.image, size:"200x200" %>
-        <% end %>
-        <%= item.name %>
-        <%= item.price %>円<br>
-      </div>
-    <% end %>
+    </div>
   </div>
 </div>
