@@ -20,12 +20,11 @@ class Public::CartItemsController < ApplicationController
       redirect_to cart_items_path
     else
       flash[:alert] = "個数を選択してください"
-      render :index
+      render "/items/show"
     end
   end
 
   def update
-    @cart_items = current_customer.cart_items
     @cart_item = CartItem.find(params[:id])
     @cart_item.update(cart_item_params)
     redirect_to cart_items_path

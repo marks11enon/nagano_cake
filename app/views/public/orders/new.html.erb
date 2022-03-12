@@ -1,2 +1,50 @@
-<h1>Public::Orders#new</h1>
-<p>Find me in app/views/public/orders/new.html.erb</p>
+<div class="row">
+  <div class="col-xs-7">
+    <h2><i class="fas fa-pen"></i>注文情報入力</h2>
+    <!-- <p><%= notice %></p> -->
+
+    <%= form_with model: @order, url: comfirm_path, local: true do |f| %>
+      <div class="form-group">
+        <h3>支払方法</h3>
+        <!-- ラジオボタン記述 -->
+        <%= f.radio_button :payment, 0 %>
+        <%= f.label :payment_method, "クレジットカード", value: 0 %>
+        <%= f.radio_button :payment, 1 %>
+        <%= f.label :payment_method, "銀行振込", value: 1 %>
+      </div>
+      <div class="form-group">
+        <h3>お届け先</h3>
+        <!-- 自身の住所  -->
+        <span>　　　</span><%= f.radio_button :a_method, 0, checked: "checked" %><%= f.label :ご自身の住所 %><br>
+        <span>　　　　　</span><%= @customer.postal_code %><%= @customer.address %><br>
+        <span>　　　　　</span><%= @customer.last_name %><%= @customer.first_name %><br>
+			</div>
+
+  		<div class="form-group">
+  		  <!-- 登録住所から選択 -->
+  			<span>　　　</span><%= f.radio_button :a_method, 1 %><%= f.label :登録済住所から選択 %><br>
+  			<!-- collection_select(プロパティ名, オブジェクトの配列, value属性の項目, テキストの項目 [, オプション])-->
+  			<span>　　　　　</span><%= f.collection_select :address_for_order, @addresses, :id, :address_all %><br>
+			</div>
+
+			<div class="form-group">
+			  <span>　　　</span><%= f.radio_button :a_method, 2 %><%= f.label :新しいお届け先 %><br>
+			  <div class="form-group col-xs-12">
+			    <%= f.label :"　　　郵便番号(ハイフンなし)", class: "col-xs-3 control-label"  %>
+			    <%= f.text_field :post_code, class: "col-xs-4 form-control-static postal_code" %>
+		    </div>
+  			<div class="form-group col-xs-12">
+  				<%= f.label :"　　　住所", class: "col-xs-3 control-label" %>
+  				<%= f.text_field :address, class: "col-xs-7 form-control-static address" %>
+  			</div>
+  			<div class="form-group col-xs-12">
+  				<%= f.label :"　　　宛名", class: "col-xs-3 control-label" %>
+  				<%= f.text_field :name, class: "col-xs-4 form-control-static name"%>
+  			</div>
+			</div>
+			<div class="action">
+			  <%= f.submit "確認画面へ進む", class: 'btn btn-warning col-xs-6 col-xs-offset-1'%>
+		  </div>
+  	<% end %>
+  </div>
+</div>
