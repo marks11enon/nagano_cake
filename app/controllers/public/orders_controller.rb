@@ -6,16 +6,16 @@ class Public::OrdersController < ApplicationController
   end
 
   def confirm
-    @order = Order.new(order_params)
+    @order = Order.new
     # new 画面から渡ってきたデータを @order に入れます
-    if params[:order][:address_number] == "1"
-      # view で定義している address_number が"1"だったときにこの処理を実行します
+    if params[:order][:address_number] == "0"
+      # view で定義している address_number が"0"だったときにこの処理を実行します
       # form_with で @order で送っているので、order に紐付いた address_number となります。以下同様です
       # この辺の紐付けは勉強不足なので gem の pry-byebug を使って確認しながら行いました
-      @order.name = current_customer.name # @order の各カラムに必要なものを入れます
-      @order.address = current_customer.customer_address
-    elsif params[:order][:address_number] == "2"
-      # view で定義している address_number が"2"だったときにこの処理を実行します
+      @order.name = current_customer.full_name # @order の各カラムに必要なものを入れます
+      @order.address = current_customer.address
+    elsif params[:order][:address_number] == "1"
+      # view で定義している address_number が"1"だったときにこの処理を実行します
       if Address.exists?(name: params[:order][:registered])
       # registered は viwe で定義しています
         @order.name = Address.find(params[:order][:registered]).name
@@ -24,8 +24,8 @@ class Public::OrdersController < ApplicationController
         render :new
       # 既存のデータを使っていますのでありえないですが、万が一データが足りない場合は new を render します
       end
-    elsif params[:order][:address_number] == "3"
-      # view で定義している address_number が"3"だったときにこの処理を実行します
+    elsif params[:order][:address_number] == "2"
+      # view で定義している address_number が"2"だったときにこの処理を実行します
       address_new = current_customer.addresses.new(address_params)
       if address_new.save # 確定前(確認画面)で save してしまうことになりますが、私の知識の限界でした
       else
@@ -36,8 +36,7 @@ class Public::OrdersController < ApplicationController
       redirect_to 遷移したいページ # ありえないですが、万が一当てはまらないデータが渡ってきた場合の処理です
     end
     @cart_items = current_customer.cart_items.all # カートアイテムの情報をユーザーに確認してもらうために使用します
-    @total = @cart_items.inject(0) { |sum, item| sum + item.sum_price }
-  # 合計金額を出す処理です sum_price はモデルで定義したメソッドです
+    @total = @cart_items.inject(0) { |sum, item| sum + item.subtotal }
   end
 
   def create
@@ -50,14 +49,14 @@ class Public::OrdersController < ApplicationController
       cart_items.each do |cart|
       # 取り出したカートアイテムの数繰り返します
       # order_item にも一緒にデータを保存する必要があるのでここで保存します
-      order_item = OrderItem.new
-      order_item.item_id = cart.item_id
-      order_item.order_id = @order.id
-      order_item.order_quantity = cart.quantity
+      order_detail = OrderDetail.new
+      order_detail.item_id = cart.item_id
+      order_detail.order_id = @order.id
+      order_detail.amount = cart.amount
       # 購入が完了したらカート情報は削除するのでこちらに保存します
-      order_item.order_price = cart.item.price
+      order_detail.price = cart.item.price
       # カート情報を削除するので item との紐付けが切れる前に保存します
-      order_item.save
+      order_detail.save
       end
       redirect_to orders_path
       cart_items.destroy_all
@@ -81,7 +80,7 @@ class Public::OrdersController < ApplicationController
 
   private
   def order_params
-    params.require(:order).permit(:name, :address, :total)
+    params.require(:order).permit(:payment, :address, :postage, :postal_code, :name, :total)
   end
 
   def address_params

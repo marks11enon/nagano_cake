@@ -41,7 +41,7 @@ class Public::CartItemsController < ApplicationController
  # カートを空にする
   def destroy_all
     @cart_items = current_customer.cart_items
-    @cart_item.destroy_all
+    @cart_items.destroy_all
     flash[:alert] = "カートの商品を全て削除しました"
     redirect_to cart_items_path
   end
