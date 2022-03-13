@@ -1,39 +1,45 @@
-<div>
-  <p>マイページ</p>
-  <div>登録情報</div>
-  <div>
-  <%= link_to "編集する", edit_path, class:"btn btn-success" %>
-  </div>
-  <div>
-    <p>氏名</p>
-    <%= @customer.full_name %>
-  </div>
-  <div>
-    <p>フリガナ</p>
-    <%= @customer.full_name_kana %>
-  </div>
-  <div>
-    <p>郵便番号</p>
-    <%= @customer.postal_code %>
-  </div>
-  <div>
-    <p>住所</p>
-    <%= @customer.address %>
-  </div>
-  <div>
-    <p>電話番号</p>
-    <%= @customer.telephone_number %>
-  </div>
-  <div>
-    <p>メールアドレス</p>
-    <%= @customer.email %>
-  </div>
-  <div>
-    <p>配送先</p>
-    <%= link_to "一覧を見る", addresses_path, class:"btn btn-success" %>
-  </div>
-  <div>
-    <p>注文履歴</p>
-    <%= link_to "一覧を見る", orders_path, class:"btn btn-success" %>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h3><strong>マイページ</strong></h3>
+      <table class="table table-bordered table-condensed">
+        <p>
+          <strong class="information-link">登録情報</strong>
+          <%= link_to "編集する", edit_path, class: "glyphicon glyphicon-pencil btn btn-success" %>
+        </p>
+        <tr>
+          <td class="col-xs-2">氏名</td>
+          <td><%= current_customer.full_name %></td>
+        </tr>
+        <tr>
+          <td class="col-xs-2">フリガナ</td>
+          <td><%= current_customer.full_name_kana %></td>
+        </tr>
+        <tr>
+          <td class="col-xs-2">郵便番号</td>
+          <td><%= current_customer.postal_code %></td>
+        </tr>
+        <tr>
+          <td class="col-xs-2">住所</td>
+          <td><%= current_customer.address %></td>
+        </tr>
+        <tr>
+          <td class="col-xs-2">電話番号</td>
+          <td><%= current_customer.telephone_number %></td>
+        </tr>
+        <tr>
+          <td class="col-xs-2">メールアドレス</td>
+          <td><%= current_customer.email %></td>
+        </tr>
+      </table>
+        <p>
+          <strong class="shipping-link">配送先</strong>
+          <%= link_to "一覧を見る", addresses_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
+        </p>
+        <p>
+          <strong class="shipping-link">注文履歴</strong>
+          <%= link_to "一覧を見る", orders_path, class: "glyphicon glyphicon-folder-open btn btn-info" %>
+        </p>
+    </div>
   </div>
 </div>

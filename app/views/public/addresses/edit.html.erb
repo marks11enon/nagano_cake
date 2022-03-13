@@ -1,20 +1,24 @@
-<div>
-  <p>配送先編集</p>
-  <%= form_with model: @address, local: true do |f| %>
-    <div class="field">
-      <%= f.label :postal_code, "電話番号(ハイフンなし)" %>
-      <%= f.text_field :postal_code %>
-    </div>
-    <div class="field">
-      <%= f.label :address, "住所" %>
-      <%= f.text_field :address %>
-    </div>
-    <div class="field">
-      <%= f.label :name, "宛名" %>
-      <%= f.text_field :name %>
-    </div>
-    <div class="actions">
-      <%= f.submit "変更内容を保存", class:"btn btn-success" %>
-    </div>
-  <% end %>
+<div class="row">
+  <div class="col-xs-12">
+    <h3><strong>配送先編集</strong></h3>
+    <%= form_with model: @address, local: true do |f| %>
+      <div class="shipping_addres col-xs-10">
+        <div class="form-group col-xs-12">
+          <%= f.label :postal_code, "電話番号(ハイフンなし)", class: "col-xs-3 control-label", style: "margin: 10px;" %>
+          <%= f.text_field :postal_code, class: "col-xs-4 form-control-static postal_code", style: "margin: 10px;" %>
+        </div>
+        <div class="form-group col-xs-12">
+          <%= f.label :address, "住所", class: "col-xs-3 control-label", style: "margin: 10px;" %>
+          <%= f.text_field :address, class: "col-xs-7 form-control-static address", style: "margin: 10px;" %>
+        </div>
+        <div class="form-group col-xs-12">
+          <%= f.label :name, "宛名", class: "col-xs-3 control-label", style: "margin: 10px;" %>
+          <%= f.text_field :name, class: "col-xs-4 form-control-static name", style: "margin: 10px;" %>
+        </div>
+        <div class="actions">
+          <%= f.submit "変更内容を保存",class: "col-xs-2 pull-right btn-sm btn-success " %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>

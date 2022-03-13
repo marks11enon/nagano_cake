@@ -1,30 +1,35 @@
 class Public::CustomersController < ApplicationController
-
+  before_action :authenticate_customer!
   # show edit update は　current_customerで対応可能
   # unsubscribe withdrawは Customer.find_by(email: session[:email])で対応可能
   # current_customer　にて統一
   def show
-    @customer = Customer.find(current_customer.id)
+    @customer = current_customer
   end
 
   def edit
-    @customer = Customer.find(current_customer.id)
+    @customer = current_customer
   end
 
   def update
-    @customer = Customer.find(current_customer.id)
-    @customer.update(customer_params)
-    redirect_to customers_my_page_path
+    @customer = current_customer
+    if @customer.update(customer_params)
+      flash[:success] = "登録情報を変更しました。"
+      redirect_to customers_my_page_path
+    else
+      render 'edit'
+    end
   end
 
   def unsubscribe
-    @customer = Customer.find(current_customer.id)
+    @customer = current_customer
   end
 
   def withdraw
-    @customer = Customer.find(current_customer.id)
+    @customer = current_customer
+
     @customer.update(is_deleted: true)
-    reset_session
+    reset_session # ログアウト
     redirect_to root_path
   end
 
