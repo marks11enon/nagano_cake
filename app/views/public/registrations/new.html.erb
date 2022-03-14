@@ -1,64 +1,90 @@
-<p>新規会員登録</p>
+<div class="contaier">
+  <h4>新規会員登録</h4>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "public/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "public/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :name, "名前" %>
-    <%= f.label :last_name, "(姓)" %>
-    <%= f.text_field :last_name %>
-    <%= f.label :first_name, "(名)" %>
-    <%= f.text_field :first_name %>
-  </div>
+    <div class="row">
+      <label class="col-lg-3">名前</label>
+      <div class="col-lg-3">
+        <%= f.label :last_name, "(姓)" %>
+        <%= f.text_field :last_name %>
+      </div>
+      <div class="col-lg-3">
+        <%= f.label :first_name, "(名)" %>
+        <%= f.text_field :first_name %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :name, "フリガナ" %>
-    <%= f.label :last_name_kana, "(セイ)" %>
-    <%= f.text_field :last_name_kana %>
-    <%= f.label :first_name_kana, "(メイ)" %>
-    <%= f.text_field :first_name_kana %>
-  </div>
+    <div class="row">
+      <label class="col-lg-3">フリガナ</label>
+      <div class="col-lg-3">
+        <%= f.label :last_name_kana, "(セイ)" %>
+        <%= f.text_field :last_name_kana %>
+      </div>
+      <div class="col-lg-3">
+        <%= f.label :first_name_kana, "(メイ)" %>
+        <%= f.text_field :first_name_kana %>
+      </div>
+    </div><br>
 
-  <div class="field">
-    <%= f.label :email, "メールアドレス" %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+    <div class="row">
+      <label class="col-lg-3">メールアドレス</label>
+      <div class="col-lg-3">
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      </div>
+    </div><br>
 
-　<div class="field">
-    <%= f.label :postal_code, "郵便番号" %>
-    <%= f.number_field :postal_code %>
-  </div>
+    <div class="row">
+      <label class="col-lg-3">郵便番号（ハイフンなし）</label>
+      <div class="col-lg-3">
+        <%= f.text_field :postal_code %>
+      </div>
+    </div><br>
 
-  <div class="field">
-    <%= f.label :address, "住所" %>
-    <%= f.text_field :address %>
-  </div>
+    <div class="row">
+      <label class="col-lg-3">住所</label>
+      <div class="col-lg-6">
+        <%= f.text_field :address %>
+      </div>
+    </div><br>
 
-   <div class="field">
-    <%= f.label :telephone_number, "電話番号(ハイフンなし)" %>
-    <%= f.telephone_field :telephone_number %>
-  </div>
+    <div class="row">
+      <label class="col-lg-3">電話番号（ハイフンなし）</label>
+      <div class="col-lg-3">
+        <%= f.text_field :telephone_number %>
+      </div>
+    </div><br>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+    <div class="row">
+      <label class="col-lg-3">パスワード
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %>文字以上)</em>
+      <% end %></label>
+      <div class="col-lg-3">
+        <%= f.password_field :password, autocomplete: "new-password" %>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-lg-3">パスワード（確認用）</label>
+      <div class="col-lg-3">
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+      </div>
+    </div><br>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <div class="row">
+      <div class="col-lg-3"></div>
+      <div class="actions col-lg-3">
+        <%= f.submit "新規登録", class: "btn btn-success" %>
+      </div>
+    </div><br>
 
-  <div class="actions">
-    <%= f.submit "新規登録" %>
-  </div>
-<% end %>
-
-<%= render "public/shared/links" %>
-
-
-<p>既に登録済みの方</p>
-<%= link_to "こちら", new_customer_session_path %> からログインしてください。
+    <h4>既に登録済みの方</h4>
+    <div class="col-sm-3">
+      <%- if controller_name != 'sessions' %>
+        <%= link_to "こちら", new_customer_session_path %>
+      <% end %>
+  からログインしてください
+    </div>
+  <% end %>
+</div>

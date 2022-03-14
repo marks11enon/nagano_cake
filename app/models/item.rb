@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
   belongs_to :genre
   has_many :cart_items, dependent: :destroy
-  has_one_attached :image
+  attachment :image
   validates :is_active, inclusion: { in: [true, false] }
 
   scope :active, -> {where(is_active: true)}

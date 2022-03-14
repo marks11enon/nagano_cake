@@ -1,31 +1,42 @@
-<div>
-  <p>商品詳細</p>
-    <div>
-      <%= image_tag @item.image, size: "300x300" %>
+<div class="container">
+  <h2>商品詳細</h2><br>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= attachment_image_tag @item, :image, :fill, 300, 250, fallback: 'no_image.jpg' %>
     </div>
-    <div>
-      <p>商品名</p>
-      <%= @item.name %>
+
+    <!-- 商品登録フォーム -->
+    <div class="col-sm-8">
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>商品名</td>
+            <td><%= @item.name %></td>
+          </tr>
+          <tr>
+            <td>商品説明</td>
+            <td><%= @item.introduction %></td>
+          <tr>
+            <td>ジャンル</td>
+            <td><%= @item.genre.name %></td>
+          </tr>
+          <tr>
+            <td>税込価格<br>(税抜価格)</td>
+            <td><%= @item.with_tax_price.to_s(:delimited) %>(<%= @item.price %>)円</td>
+          </tr>
+          <tr>
+            <td>販売ステータス</td>
+            <td>
+              <% if @item.is_active == false %>
+                販売停止中
+              <% else %>
+                販売中
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <%= button_to "編集する", edit_admin_item_path(@item.id), method: :get, class:"btn btn-primary", style: "margin-left:50%;"%>
     </div>
-    <div>
-      <p>商品説明</p>
-      <%= @item.introduction %>
-    </div>
-    <div>
-      <p>ジャンル</p>
-      <%= @item.genre.name %>
-    </div>
-      <p>税込価格<br>
-      （税抜価格）</p>
-      <%= @item.add_tax_price.to_s(:delimited) %>(<%= @item.price %>)円
-    </div>
-    <div>
-      <p>販売ステータス</p>
-      <% if @item.is_active == false %>
-        <p>販売停止中</p>
-      <% else %>
-        <p>販売中</p>
-      <% end %>
-    </div>
-    <%= link_to "編集する", edit_admin_item_path(@item.id), class:"btn btn-success" %>
+  </div>
 </div>
