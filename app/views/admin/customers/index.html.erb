@@ -1,7 +1,7 @@
-<p>会員一覧</p>
-<div>
-  <div>
-    <table>
+<div class="row">
+  <div class="col-xs-10 col-xs-offset-1">
+    <h2>会員一覧</h2>
+    <table class="table table-bordered">
       <thead>
         <th>会員ID</th>
         <th>氏名</th>
@@ -21,6 +21,7 @@
             <% end %>
           </tr>
         <% end %>
+        <%= paginate @customers %>
       </tbody>
     </table>
   </div>

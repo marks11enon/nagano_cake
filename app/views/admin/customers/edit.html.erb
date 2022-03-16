@@ -1,6 +1,8 @@
 <div>
-  <p><%= @customer.full_name %>さんの会員詳細</p>
+  <h4><%= @customer.full_name %>さんの会員詳細</h4>
   <%= form_with model: @customer, url: admin_customer_path(@customer), method: :patch, local: true do |f| %>
+
+
    <div class:"form-group">
      <p>会員ID</p>
      <%= @customer.id %>
