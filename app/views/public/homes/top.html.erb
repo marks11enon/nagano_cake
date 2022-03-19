@@ -1,8 +1,12 @@
 <div class="container">
-  <div class:"row">
-	  <%= render 'public/items/sidebar', genres: @genres %>
+  <div class="row">
+  	<div class="col-xs-3">
+  	  <div class="sidebar">
+  	    <%= render 'public/items/sidebar', genres: @genres %>
+  	  </div>
+    </div>
 
-    <div class="col-xs-9">
+    <div class="col">
       <div class="bg-top">
         <div class="bg-top2">
           <h4 style="font-family: HiraMinPro-W6; color: #000000; margin: 20px 0;">
@@ -15,7 +19,6 @@
       </div>
 
       <h4 class="recommended-items" style="font-family: HiraMinPro-W6; color: #000000;">オススメ商品</h4><br>
-      <div class="row">
 
         <div id="multiple-items">
           <% @items.last(4).each do |item| %>
