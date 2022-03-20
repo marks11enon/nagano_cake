@@ -6,25 +6,20 @@ class Public::OrdersController < ApplicationController
   end
 
   def confirm
-
     @order = Order.new(order_params)
-    # new 画面から渡ってきたデータを @order に入れます
+
     if params[:order][:address_option] == "0"
-      # view で定義している address_number が"0"だったときにこの処理を実行します
-      # form_with で @order で送っているので、order に紐付いた address_number となります。以下同様です
-      # この辺の紐付けは勉強不足なので gem の pry-byebug を使って確認しながら行いました
-      @order.name = current_customer.full_name # @order の各カラムに必要なものを入れます
+      @order.postal_code = current_customer.postal_code
       @order.address = current_customer.address
+      @order.name = current_customer.last_name + current_customer.first_name
+
     elsif params[:order][:address_option] == "1"
       # view で定義している address_number が"1"だったときにこの処理を実行します
-      if Address.exists?(name: params[:order][:registered])
-      # registered は viwe で定義しています
-        @order.name = Address.find(params[:order][:registered]).name
-        @order.address = Address.find(params[:order][:registered]).address
-      else
-        render :new
-      # 既存のデータ使用のため基本はできるはず、万が一データが足りない場合は new を render します
-      end
+      @address = Address.find(params[:order][:address_id])
+      @order.postal_code = @address.postal_code
+      @order.address = @address.address
+      @order.name = @address.name
+
     elsif params[:order][:address_option] == "2"
       # view で定義している address_number が"2"だったときにこの処理を実行します
       @address = Address.new(customer_id: current_customer.id)
@@ -35,6 +30,8 @@ class Public::OrdersController < ApplicationController
         @order.postal_code =  @address.postal_code
         @order.address =  @address.address
         @order.name = @address.name
+
+      binding.pry
       else
         render 'new'
       end
@@ -90,7 +87,4 @@ class Public::OrdersController < ApplicationController
     params.require(:order).permit(:payment, :address, :postage, :postal_code, :name, :total)
   end
 
-  def address_params
-  params.require(:order).permit(:name, :address, :postal_code)
-  end
 end
