@@ -1,22 +1,16 @@
 class Public::AddressesController < ApplicationController
+  before_action :authenticate_customer!
+
   def index
-    @customer = current_customer
-    @addresses = @customer.addresses
     @address = Address.new
+    @addresses = current_customer.addresses.page(params[:page]).per(3)
   end
 
   def create
     @address = Address.new(address_params)
     @address.customer_id = current_customer.id
-    if @address.save
-      flash[:success] = "登録に成功しました"
-      redirect_to addresses_path
-    else
-      @customer = current_customer
-      @address = @customer.address.all
-      flash[:warning] = "入力内容を確認してください"
-      render :index
-    end
+    @address.save!
+    redirect_to addresses_path
   end
 
   def edit

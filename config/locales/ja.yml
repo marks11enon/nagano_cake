@@ -11,7 +11,7 @@ ja:
         wating: '入金待ち'
         paid_up: '入金確認'
         making: '製作中'
-        preparing: '発送準備'
+        preparing: '発送準備中'
         shipped: '発送済み'
 # order_detailカラムのmaking_status
     order_detail:

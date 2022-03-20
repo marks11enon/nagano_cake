@@ -1,53 +1,59 @@
-<%= render 'layouts/errors', obj: @address %>
-<%= flash[:success] %>
-
-
-<div class="row">
-  <div class="col-xs-3">
-    <h3><strong>配送先登録/一覧</strong></h3>
-    <%= form_with model: @address, local: true do |f| %>
-      <div class="shipping_addres">
-        <div class="form-group col-xs-12">
-          <%= f.label :postal_code, "電話番号(ハイフンなし)", class: "col-xs-3 control-label" %>
-          <%= f.text_field :postal_code, class: "col-xs-4 form-control-static postal_code" %>
-        </div>
-        <div class="form-group col-xs-12">
-          <%= f.label :address, "住所",class: "col-xs-3 control-label" %>
-          <%= f.text_field :address, class: "col-xs-7 form-control-static address" %>
-        </div>
-         <div class="form-group col-xs-12">
-          <%= f.label :name, "宛名" ,class: "col-xs-3 control-label" %>
-          <%= f.text_field :name, class: "col-xs-4 form-control-static name" %>
-          <%= f.submit "新規登録",class: "col-xs-2 pull-right btn-sm btn-success " %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-9">
-    <table class="table table-hover table-bordered">
-      <thead>
-        <tr class="address-info">
-          <th>郵便番号</th>
-          <th>住所</th>
-          <th>宛名</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @addresses.each do |address| %>
-          <tr>
-            <td class="col-xs-2"><%= address.postal_code %></td>
-            <td class="col-xs-6"><%= address.address %></td>
-            <td class="col-xs-2"><%= address.name %></td>
-            <td class="col-xs-2">
-              <%= link_to "編集する", edit_address_path(address), class: "glyphicon glyphicon-pencil btn-sm btn-primary" %>
-              <%= link_to "削除する", address_path(address), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "glyphicon glyphicon-trash btn-sm btn-danger" %>
-            </td>
-          </tr>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-3">
+      <h3><strong>配送先登録/一覧</strong></h3>
+      <div>
+        <%= form_with model: @address, url: addresses_path, method: :post, local: true do |f| %>
+          <table class="table">
+            <tr "form-group col-xs-12">
+              <th><%= f.label :postal_code, "郵便番号(ハイフンなし7桁)", class: "col-xs-3 control-label" %></th>
+              <td><%= f.text_field :postal_code, class: "col-xs-4 form-control-static postal_code" %></td>
+            </tr>
+            <tr "form-group col-xs-12">
+              <th><%= f.label :address, "住所",class: "col-xs-3 control-label" %></th>
+              <td><%= f.text_field :address, class: "col-xs-7 form-control-static address" %></td>
+            </tr>
+            <tr "form-group col-xs-12">
+              <th><%= f.label :name, "宛名" ,class: "col-xs-3 control-label" %></th>
+              <td><%= f.text_field :name, class: "col-xs-4 form-control-static name" %></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td><%= f.submit "新規登録",class: "col-xs-2 pull-right btn-sm btn-success " %></td>
+            </tr>
+          </table>
         <% end %>
-      </tbody>
-    </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-9">
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr class="address-info">
+            <th>郵便番号</th>
+            <th>住所</th>
+            <th>宛名</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @addresses.each do |address| %>
+            <tr>
+              <td class="col-xs-2"><%= address.postal_code %></td>
+              <td class="col-xs-6"><%= address.address %></td>
+              <td class="col-xs-2"><%= address.name %></td>
+              <td class="col-xs-2">
+                <%= link_to "編集する", edit_address_path(address), class: "glyphicon glyphicon-pencil btn-sm btn-primary" %>
+                <%= link_to "削除する", address_path(address), method: :delete, data: {confirm: "本当に削除してもよろしいですか？"}, class: "glyphicon glyphicon-trash btn-sm btn-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div>
+        <%= paginate @addresses %>
+      </div>
+    </div>
   </div>
 </div>
