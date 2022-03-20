@@ -30,8 +30,6 @@ class Public::OrdersController < ApplicationController
         @order.postal_code =  @address.postal_code
         @order.address =  @address.address
         @order.name = @address.name
-
-      binding.pry
       else
         render 'new'
       end
@@ -43,31 +41,24 @@ class Public::OrdersController < ApplicationController
   end
 
   def create
-    cart_items = current_customer.cart_items.all
-    # ログインユーザーのカートアイテムをすべて取り出して cart_items に入れます
-    @order = current_customer.orders.new(order_params)
-    # 渡ってきた値を @order に入れます
-    if @order.save
-    # ここに至るまでの間にチェックは済ませていますが、念の為IF文で分岐させています
-      cart_items.each do |cart|
-      # 取り出したカートアイテムの数繰り返します
-      # order_item にも一緒にデータを保存する必要があるのでここで保存します
-      order_detail = OrderDetail.new
-      order_detail.item_id = cart.item_id
-      order_detail.order_id = @order.id
-      order_detail.amount = cart.amount
-      # 購入が完了したらカート情報は削除するのでこちらに保存します
-      order_detail.price = cart.item.price
-      # カート情報を削除するので item との紐付けが切れる前に保存します
-      order_detail.save
-      end
-      redirect_to complete_path
-      cart_items.destroy_all
-      # ユーザーに関連するカートのデータ(購入したデータ)をすべて削除します(カートを空にする)
-    else
-      @order = Order.new(order_params)
-      render :new
+    @order = Order.new(order_params) #初期化代入
+    @order.customer_id = current_customer.id #customer_idの代入
+    @order.save
+
+    # order_detailsの保存
+    current_customer.cart_items.each do |cart_item|
+      @order_detail = OrderDetail.new
+      @order_detail.item_id = cart_item.item_id
+      @order_detail.amount = cart_item.amount
+      @order_detail.price = cart_item.item.price #税抜価格で保存
+      @order_detail.order_id = @order.id
+      @order_detail.save
     end
+
+    binding.pry
+
+    current_customer.cart_items.destroy_all
+    redirect_to complete_path
   end
 
   def complete
@@ -79,7 +70,7 @@ class Public::OrdersController < ApplicationController
 
   def show
     @order = Order.find(params[:id])
-		@order_detail = @order.order_detail
+		@order_details = @order.order_details
   end
 
   private

@@ -17,7 +17,7 @@ ja:
     order_detail:
       making_status:
         #making_status: { no_making: 0, wating: 1, making: 2, finished: 3 }
-        no_making: '製作不可'
+        no_making: '着手不可'
         wating: '製作待ち'
         making: '製作中'
         finished: '製作完了'

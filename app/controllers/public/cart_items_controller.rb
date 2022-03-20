@@ -8,14 +8,19 @@ class Public::CartItemsController < ApplicationController
   end
 
   def create
-    # @cart_item = current_customer.cart_items.build(item_id: params[:item_id])
-    # binding.pry
     @item =Item.find(cart_item_params[:item_id])
     @cart_item = CartItem.new(cart_item_params)
     @cart_item.customer_id = current_customer.id
     @cart_item.item_id = params[:item_id]
 
-    if @cart_item.save
+    if current_customer.cart_items.find_by(item_id: params[:cart_item][:item_id])
+
+      @cart_item = current_customer.cart_items.find_by(item_id: params[:cart_item][:item_id])
+      @cart_item.amount += params[:cart_item][:amount].to_i
+      @cart_item.update(amount: @cart_item.amount)
+			redirect_to cart_items_path
+
+    elsif @cart_item.save
       flash[:notice] = "#{@cart_item.item.name}をカートに追加しました。"
       redirect_to cart_items_path
     else
