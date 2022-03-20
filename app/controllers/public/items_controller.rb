@@ -7,7 +7,7 @@ class Public::ItemsController < ApplicationController
     end
     @genres = Genre.all
     @items_all = Item.all
-    @quantity = Item.count
+    @quantity = Item.active.count
   end
 
   def show
